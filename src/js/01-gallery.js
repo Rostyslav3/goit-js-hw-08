@@ -1,51 +1,30 @@
-// Add imports above this line
+import { galleryItems } from './gallery-items.js';
 import simpleLightbox from 'simplelightbox';
-import "simplelightbox/dist/simple-lightbox.min.css"
-import { galleryItems } from './gallery-items';
+import "simplelightbox/dist/simple-lightbox.min.css";
 // Change code below this line
-
 const galleryContainer = document.querySelector(".gallery");
 
 galleryItems.forEach((galleryItem) => {
   galleryContainer.insertAdjacentHTML(
-    "beforeend",
-    `
-    <div class="gallery__item">
-      <a class="gallery__link" href="large-image.jpg">
-        <img
-          class="gallery__image"
-          src=${galleryItem.preview}
-          data-source=${galleryItem.original}
-          alt=${galleryItem.description}
-        />
-      </a>
-    </div>`
+      "beforeend",
+      `<a class="gallery__item" href=${galleryItem.original}>
+      <img 
+        class="gallery__image" 
+         src=${galleryItem.preview} 
+         alt=${galleryItem.description}
+        </a>`
+  
   );
 });
-galleryContainer.addEventListener("click", (el) => {
-  el.preventDefault();
-  if (el.target.nodeName !== "IMG") {
-    return;
-  }
-  const instance = basicLightbox.create(`
-    <img src=${el.target.dataset.source} width="800" height="600">
-`);
-  instance.show();
-  window.addEventListener("keydown", onModalOpen);
 
-  function onModalOpen(el) {
-    console.log(el);
-    if (el.code !== "Escape") {
-      return;
-    }
 
-    instance.close();
-    window.removeEventListener("keydown", onModalOpen);
-  }
+var lightbox = new SimpleLightbox(".gallery a", {
+  captions: true,
+  captionSelector: "img",
+  captionType: "attr",
+  captionsData: "alt",
+  captionPosition: "bottom",
+  captionDelay: 250,
 });
 
-
-
-
 console.log(galleryItems);
-
